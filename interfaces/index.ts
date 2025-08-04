@@ -1,3 +1,4 @@
+// interfaces/index.ts
 export interface Product {
   id: number;
   name: string;
@@ -35,4 +36,23 @@ export interface PaginationProps {
 
 export interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
+}
+
+export interface NavItem {
+  label: string;
+  hasDropdown?: boolean;
+  dropdownContent?: DropdownSection[];
+}
+
+export interface DropdownSection {
+  title: string;
+  links: string[];
+}
+
+export interface HeroContent {
+  tagline: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  buttonText: string;
 }

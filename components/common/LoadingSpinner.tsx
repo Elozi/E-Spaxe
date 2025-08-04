@@ -1,3 +1,4 @@
+// components/common/LoadingSpinner.tsx
 import { FC } from 'react';
 import { LoadingSpinnerProps } from '../../interfaces';
 
@@ -9,7 +10,11 @@ const LoadingSpinner: FC<LoadingSpinnerProps> = ({ size = 'md' }) => {
   };
 
   return (
-    <div className={`animate-spin rounded-full border-t-4 border-blue-600 ${sizeClasses[size]}`} />
+    <div
+      className={`animate-spin rounded-full border-t-4 border-blue-600 ${sizeClasses[size]}`}
+      role="status"
+      aria-label="Loading"
+    />
   );
 };
 

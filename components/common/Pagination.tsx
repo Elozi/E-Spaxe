@@ -1,10 +1,11 @@
+// components/common/Pagination.tsx
 import { FC } from 'react';
 import { PaginationProps } from '../../interfaces';
 import Button from './Button';
 
 const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   return (
-    <div className="flex gap-2 justify-center mt-4">
+    <div className="flex gap-2 justify-center mt-4" role="navigation" aria-label="Pagination">
       <Button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
