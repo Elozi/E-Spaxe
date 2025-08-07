@@ -3,7 +3,7 @@ export const API_URL = 'https://fakestoreapi.com/products'; // Placeholder for f
 
 export const UI_TEXT = {
   BRAND_NAME: 'e-spaxe',
-  WELCOME_MESSAGE: 'Browse our latest fashion collection!',
+  WELCOME_MESSAGE: 'Browse the latest fashion for men, women & kids!',
   BUY_NOW: 'Buy Now',
   VIEW_DETAILS: 'View Details',
   LOADING: 'Loading...',
@@ -12,6 +12,11 @@ export const UI_TEXT = {
   WISHLIST: 'Wishlist',
   CART: 'Cart',
   ACCOUNT: 'Account',
+  NEW_ARRIVALS: 'New Arrivals',
+  OUR_PRODUCTS: 'Our Products',
+  QUICK_ADD: 'Quick Add',
+  QUICK_VIEW: 'Quick View',
+  VIEW_ALL: 'View All',
 };
 
 export const NAV_ITEMS = [
@@ -21,16 +26,20 @@ export const NAV_ITEMS = [
     hasDropdown: true,
     dropdownContent: [
       {
-        title: 'By Category',
-        links: ['Necklaces', 'Earrings', 'Bracelets', 'Rings', 'Pendants', 'Charms'],
+        title: 'Women',
+        links: ['Dresses', 'Tops', 'Pants', 'Skirts', 'Outerwear', 'Activewear'],
       },
       {
-        title: 'By Style',
-        links: ['Minimalist', 'Vintage', 'Statement', 'Bohemian', 'Classic', 'Modern'],
+        title: 'Men',
+        links: ['Shirts', 'T-Shirts', 'Jeans', 'Jackets', 'Suits', 'Activewear'],
       },
       {
-        title: 'Special Collections',
-        links: ['Bridal', 'Anniversary', 'Birthstone', 'Limited Edition'],
+        title: 'Kids',
+        links: ['Girls Clothing', 'Boys Clothing', 'Babywear', 'Schoolwear'],
+      },
+      {
+        title: 'Accessories',
+        links: ['Bags', 'Shoes', 'Watches', 'Jewelry', 'Sunglasses', 'Hats'],
       },
     ],
   },
@@ -39,38 +48,35 @@ export const NAV_ITEMS = [
     hasDropdown: true,
     dropdownContent: [
       {
-        title: 'Product Detail',
+        title: 'By Category',
         links: [
-          'Product Detail Default',
-          'Product Detail Thumb Left 1',
-          'Product Detail Thumb Left 2',
-          'Product Detail Thumb Right',
-          'Product Deals Countdown',
-          'Product Detail Tab Accordion V1',
-          'Product Detail Tab Accordion V2',
+          'New Arrivals',
+          'Best Sellers',
+          'Seasonal Collection',
+          'Matching Sets',
+          'Family Outfits',
+          'Essentials',
         ],
       },
       {
-        title: 'Product Detail',
+        title: 'By Occasion',
         links: [
-          'Product Detail Thumb Grid 1',
-          'Product Detail Thumb Grid 2',
-          'Product Detail Image Grid',
-          'Product Detail Image Scroll',
-          'Product Detail Image Slider 1',
-          'Product Detail Image Slider 2',
-          'Product 3D, AR Models',
+          'Casual Wear',
+          'Workwear',
+          'Party Wear',
+          'Holiday/Vacation',
+          'Loungewear',
+          'Formalwear',
         ],
       },
       {
         title: 'Product Features',
         links: [
-          'Product Video',
-          'Product Pre-Order',
-          'Product Variant Dropbox Style',
-          'Product Variant Image Swatch',
-          'Product Variant Pattern',
-          'Product Sticky Add To Cart',
+          'Personal Styling',
+          'Size Guide',
+          'Fabric Info',
+          'Pre-Order Items',
+          'Online Exclusives',
         ],
       },
     ],
@@ -81,7 +87,7 @@ export const NAV_ITEMS = [
     dropdownContent: [
       {
         title: 'Shop Pages',
-        links: ['Shop Grid', 'Shop List', 'Shop Sidebar', 'Shop Filter', 'Shop Search'],
+        links: ['Shop by Gender', 'Shop by Age', 'Shop Grid', 'Shop Filters'],
       },
       {
         title: 'Customer Pages',
@@ -89,7 +95,7 @@ export const NAV_ITEMS = [
       },
       {
         title: 'Info Pages',
-        links: ['About Us', 'Contact', 'FAQ', 'Size Guide', 'Terms & Conditions', 'Privacy Policy'],
+        links: ['About Us', 'Contact', 'FAQ', 'Size Guide', 'Shipping & Returns', 'Privacy Policy'],
       },
     ],
   },
@@ -98,26 +104,92 @@ export const NAV_ITEMS = [
     hasDropdown: true,
     dropdownContent: [
       {
-        title: 'Blog Layouts',
-        links: ['Blog Grid', 'Blog List', 'Blog Masonry', 'Blog Sidebar'],
+        title: 'Blog Categories',
+        links: ['Styling Tips', 'Family Fashion', 'Sustainable Fashion', 'Behind the Brand'],
       },
       {
         title: 'Blog Posts',
-        links: ['Single Post', 'Post with Gallery', 'Post with Video', 'Post with Audio'],
-      },
-      {
-        title: 'Categories',
-        links: ['Jewelry Care', 'Styling Tips', 'New Arrivals', 'Behind the Scenes'],
+        links: ['Single Post', 'Post with Gallery', 'Post with Video', 'Post with Interview'],
       },
     ],
   },
 ];
 
 export const HERO_CONTENT = {
-  tagline: 'OWN YOUR LOOK',
-  title: 'Accessorize With Confidence',
-  subtitle: 'For Every Occasion',
+  tagline: 'STYLE FOR EVERYONE',
+  title: 'Men, Women & Kids Fashion',
+  subtitle: 'New season arrivals for all ages',
   description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tristique ullamcorper ex, vitae consequat nisl iaculis.',
-  buttonText: 'Shop Now',
+    'Explore the latest trends and timeless staples across our men’s, women’s, and children’s collections. Style your whole family with confidence.',
+  buttonText: 'Shop All',
 };
+
+export const PRODUCT_CATEGORIES = [
+  // Gender-neutral
+  'New Arrivals',
+  'Best Sellers',
+  'Seasonal Picks',
+  'Essentials',
+
+  // Women
+  'Women\'s Dresses',
+  'Women\'s Tops',
+  'Women\'s Pants',
+  'Women\'s Skirts',
+  'Women\'s Outerwear',
+  'Women\'s Activewear',
+
+  // Men
+  'Men\'s Shirts',
+  'Men\'s T-Shirts',
+  'Men\'s Jeans',
+  'Men\'s Jackets',
+  'Men\'s Suits',
+  'Men\'s Activewear',
+
+  // Kids
+  'Girls Clothing',
+  'Boys Clothing',
+  'Babywear',
+  'Schoolwear',
+  'Mini Me Looks',
+  'Playwear',
+
+  // Shoes
+  'Sneakers',
+  'Boots',
+  'Flats',
+  'Sandals',
+  'Heels',
+  'Kids Footwear',
+
+  // Accessories
+  'Bags',
+  'Hats',
+  'Jewelry',
+  'Watches',
+  'Scarves',
+  'Belts',
+  'Sunglasses',
+];
+export const PRODUCT_STYLES = [
+  'Casual',
+  'Formal',
+  'Workwear',
+  'Sporty',
+  'Lounge',
+  'Trendy',
+  'Minimalist',
+  'Vintage',
+  'Playful (for kids)',
+];
+
+export const PRODUCT_OCCASIONS = [
+  'Everyday',
+  'Weekend',
+  'School',
+  'Vacation',
+  'Weddings',
+  'Holiday Parties',
+  'Gifting',
+];

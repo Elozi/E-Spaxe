@@ -1,11 +1,12 @@
 // interfaces/index.ts
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   category: string;
   image: string;
   description?: string;
+  rating: number;
 }
 
 export interface CardProps {
@@ -55,4 +56,18 @@ export interface HeroContent {
   subtitle: string;
   description: string;
   buttonText: string;
+}
+export interface StarRatingProps {
+  rating: number;
+  maxRating?: number;
+}
+
+export interface ProductCardProps {
+  product: Product;
+}
+
+export interface NavigationArrowsProps {
+  onPrevious: () => void;
+  onNext: () => void;
+  onViewAll: () => void;
 }

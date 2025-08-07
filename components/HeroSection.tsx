@@ -17,8 +17,8 @@ const HeroSection: FC = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div className="max-w-lg">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 py-10">
+        <div className="max-w-">
           <div className="mb-4">
             <span className="text-rose-400 text-sm font-medium tracking-wider uppercase">
               {HERO_CONTENT.tagline}

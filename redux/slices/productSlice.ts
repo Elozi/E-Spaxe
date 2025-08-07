@@ -6,6 +6,7 @@ import { API_URL } from '../../constants';
 
 export interface ProductState {
   products: Product[];
+  newArrivals: Product[];
   filteredProducts: Product[];
   loading: boolean;
   error: string | null;
@@ -15,6 +16,7 @@ export interface ProductState {
 
 const initialState: ProductState = {
   products: [],
+  newArrivals: [],
   filteredProducts: [],
   loading: false,
   error: null,
@@ -22,8 +24,13 @@ const initialState: ProductState = {
   totalPages: 1,
 };
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get<Product[]>(API_URL);
+export const fetchProducts = createAsyncThunk('products/fetchNewArrivals', async () => {
+  const response = await axios.get<Product[]>(`${API_URL}?limit=5`); 
+  return response.data;
+});
+
+export const fetchNewArrivals = createAsyncThunk('products/fetchNewArrivals', async () => {
+  const response = await axios.get<Product[]>(`${API_URL}?limit=5`); // Limit to 5 for new arrivals
   return response.data;
 });
 
@@ -59,20 +66,32 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      // .addCase(fetchProducts.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(fetchProducts.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.products = action.payload;
+      //   state.filteredProducts = action.payload.slice(0, 6);
+      //   state.totalPages = Math.ceil(action.payload.length / 6);
+      // })
+      // .addCase(fetchProducts.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message || 'Failed to fetch products';
+      // })
+      .addCase(fetchNewArrivals.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(fetchNewArrivals.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
-        state.filteredProducts = action.payload.slice(0, 6);
-        state.totalPages = Math.ceil(action.payload.length / 6);
+        state.newArrivals = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
+      .addCase(fetchNewArrivals.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch products';
-      });
+        state.error = action.error.message || 'Failed to fetch new arrivals';
+      })
   },
 });
 
