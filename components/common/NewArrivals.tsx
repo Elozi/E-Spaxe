@@ -1,18 +1,23 @@
 // components/common/NewArrivals.tsx
-import { FC, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { FC, useState,useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState,  useAppDispatch, useAppSelector} from '../../redux/store';
 import { fetchNewArrivals } from '../../redux/slices/productSlice';
 import ProductCard from './ProductCard';
+
 import NavigationArrows from './NavigationArrows';
 import LoadingSpinner from './LoadingSpinner';
 import { UI_TEXT } from '../../constants';
 
 const NewArrivals: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { newArrivals, loading, error } = useSelector((state: RootState) => state.products);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 5; // Matches grid cols (xl:grid-cols-5)
+  const itemsPerPage = 5; 
+
+   useEffect(() => {
+    dispatch(fetchNewArrivals());
+  }, [dispatch]);
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => Math.max(prev - itemsPerPage, 0));
@@ -23,7 +28,7 @@ const NewArrivals: FC = () => {
   };
 
   const handleViewAll = () => {
-    console.log('Navigate to all products page');
+    console.log('Navigate to all products page' );
     // Future: Navigate to /products with Next.js router
   };
 

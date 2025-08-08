@@ -1,12 +1,16 @@
 // interfaces/index.ts
 export interface Product {
-  id: string;
+  id: string; 
   name: string;
   price: number;
-  category: string;
+  originalPrice?: number;
   image: string;
-  description?: string;
   rating: number;
+  reviews?: number;
+  isWishlisted?: boolean; 
+  category: string;
+  material: string;
+  description?: string;
 }
 
 export interface CardProps {
@@ -70,4 +74,21 @@ export interface NavigationArrowsProps {
   onPrevious: () => void;
   onNext: () => void;
   onViewAll: () => void;
+}
+export interface FilterSidebarProps {
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export interface Filters {
+  categories: string[];
+  materials: string[];
+  priceRange: { min: number; max: number } | null;
+}
+
+export interface CatalogProps {
+  category?: string;
+  searchQuery?: string;
 }

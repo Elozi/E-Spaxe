@@ -17,6 +17,12 @@ export const UI_TEXT = {
   QUICK_ADD: 'Quick Add',
   QUICK_VIEW: 'Quick View',
   VIEW_ALL: 'View All',
+   FILTERS: 'Filters',
+  CATEGORY: 'Category',
+  MATERIAL: 'Material',
+  PRICE_RANGE: 'Price Range',
+  NO_PRODUCTS: 'No products found matching your criteria.',
+  ITEMS: 'items',
 };
 
 export const NAV_ITEMS = [
@@ -192,4 +198,32 @@ export const PRODUCT_OCCASIONS = [
   'Weddings',
   'Holiday Parties',
   'Gifting',
+];
+export const FILTER_CATEGORIES = [
+  'Women\'s Dresses',
+  'Women\'s Tops',
+  'Men\'s Shirts',
+  'Men\'s T-Shirts',
+  'Girls Clothing',
+  'Boys Clothing',
+  'Jewelry',
+  'Bags',
+  'Shoes',
+];
+export const FILTER_MATERIALS = [
+  'cotton',
+  'polyester',
+  'leather',
+  'denim',
+  'silk',
+  'wool',
+  'gold',
+  'silver',
+  'platinum',
+];
+export const FILTER_PRICE_RANGES = [
+  { label: 'Under $50', min: 0, max: 50 },
+  { label: '$50 - $100', min: 50, max: 100 },
+  { label: '$100 - $200', min: 100, max: 200 },
+  { label: 'Over $200', min: 200, max: Infinity },
 ];
