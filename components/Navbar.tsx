@@ -25,7 +25,12 @@ const Navbar: FC = () => {
     }
     router.push(`/catalog?category=${encodeURIComponent(category)}`);
   };
-
+ const handleNavItemClick = (href: string | undefined) => {
+    if (href) {
+      router.push(href);
+      setIsMenuOpen(false);
+    }
+  };
     return (
     <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-4" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto flex items-center justify-between">

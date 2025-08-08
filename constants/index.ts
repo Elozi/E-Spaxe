@@ -23,14 +23,26 @@ export const UI_TEXT = {
   PRICE_RANGE: 'Price Range',
   NO_PRODUCTS: 'No products found matching your criteria.',
   ITEMS: 'items',
+  SUBSCRIBE: 'Subscribe',
+  FOOTER_COMPANY: 'e-spaxe',
+  FOOTER_EMAIL: 'contact@e-spaxe.com',
+  FOOTER_PHONE: '+(123) 456-7890',
+  FOOTER_ADDRESS: '1093 Hood Avenue, CA',
+  FOOTER_HOURS: 'All Day: 9:00AM - 22:00PM',
+  FOOTER_COPYRIGHT: '© 2025 e-spaxe. All rights reserved.',
+  
 };
 
 export const NAV_ITEMS = [
-  { label: 'Home' },
+   { label: 'Home', href: '/' },
   {
     label: 'Collections',
     hasDropdown: true,
     dropdownContent: [
+         {
+        title: 'Jewelry',
+        links: ['Necklaces', 'Earrings', 'Bracelets', 'Rings'],
+      },
       {
         title: 'Women',
         links: ['Dresses', 'Tops', 'Pants', 'Skirts', 'Outerwear', 'Activewear'],
@@ -61,6 +73,7 @@ export const NAV_ITEMS = [
           'Seasonal Collection',
           'Matching Sets',
           'Family Outfits',
+          'Jewelry',
           'Essentials',
         ],
       },
@@ -226,4 +239,60 @@ export const FILTER_PRICE_RANGES = [
   { label: '$50 - $100', min: 50, max: 100 },
   { label: '$100 - $200', min: 100, max: 200 },
   { label: 'Over $200', min: 200, max: Infinity },
+];
+export const CATEGORIES = [
+  {
+    id: 1,
+    name: 'Necklaces',
+    slug: 'necklaces',
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+  },
+  {
+    id: 2,
+    name: 'Earrings',
+    slug: 'earrings',
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=500&fit=crop&crop=center',
+  },
+  {
+    id: 3,
+    name: 'Bracelets',
+    slug: 'bracelets',
+    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=500&fit=crop&crop=center',
+  },
+  {
+    id: 4,
+    name: 'Rings',
+    slug: 'rings',
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=500&fit=crop&crop=center',
+  },
+];
+
+export const FOOTER_SECTIONS = [
+  {
+    title: 'My Account',
+    links: [
+      { label: 'Login/Register', href: '/account' },
+      { label: 'Wishlist', href: '/wishlist' },
+      { label: 'Track Your Orders', href: '/orders' },
+      { label: 'Checkout', href: '/checkout' },
+    ],
+  },
+  {
+    title: 'Our Policies',
+    links: [
+      { label: 'Shipping & Delivery', href: '/shipping' },
+      { label: 'Returns Policy', href: '/returns' },
+      { label: 'Terms & Conditions', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
+    ],
+  },
+  {
+    title: 'Customer Care',
+    links: [
+      { label: 'FAQs', href: '/faq' },
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Gift Card', href: '/gift-card' },
+    ],
+  },
 ];

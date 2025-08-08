@@ -12,6 +12,7 @@ import Pagination from '../components/common/Pagination';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { UI_TEXT } from '../constants';
 import NewArrivals from '../components/common/NewArrivals';
+import CategoryGrid from '../components/common/CategoryGrid';
 
 const Home: FC = () => {
  const dispatch = useDispatch<AppDispatch>()
@@ -44,8 +45,9 @@ useEffect(() => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <HeroSection />
+       <CategoryGrid />
       <NewArrivals />
-      <section className="max-w-7xl mx-auto px-6 py-12">
+      {/* <section className="max-w-7xl mx-auto px-6 py-12">
         <h2 className="text-2xl font-semibold mb-6 text-gray-900">{UI_TEXT.WELCOME_MESSAGE}</h2>
         <div className="flex flex-col md:flex-row gap-6">
           <div className="md:w-1/4">
@@ -78,7 +80,7 @@ useEffect(() => {
             )}
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

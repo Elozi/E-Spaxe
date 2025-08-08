@@ -92,3 +92,19 @@ export interface CatalogProps {
   category?: string;
   searchQuery?: string;
 }
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+export interface FooterLink {
+  label: string;
+  href: string;
+}
+
+export interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
