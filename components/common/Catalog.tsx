@@ -1,5 +1,6 @@
 // components/common/Catalog.tsx
 import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search, Filter, Grid, List } from 'lucide-react';
 import { RootState } from '../../redux/store';
@@ -7,13 +8,13 @@ import { setFilters, setSort, fetchProducts, fetchCategories } from '../../redux
 import ProductCard from './ProductCard';
 import FilterSidebar from './FilterSidebar';
 import LoadingSpinner from './LoadingSpinner';
-import { UI_TEXT,MOCK_PRODUCTS } from '../../constants';
+import { UI_TEXT, MOCK_PRODUCTS, CATEGORIES } from '../../constants';
 import { CatalogProps, Filters } from '../../interfaces';
 import type { AppDispatch } from '../../redux/store';
 
 const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: initialSearchQuery }) => {
-  
-const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
+   const router = useRouter();
   const { filteredProducts, categories, loading, error } = useSelector((state: RootState) => state.products);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
@@ -47,7 +48,9 @@ const dispatch = useDispatch<AppDispatch>();
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">{initialCategory || 'Shop'}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {CATEGORIES.find(cat => cat.slug === initialCategory)?.name || 'Shop'}
+              </h1>
               <span className="text-sm text-gray-500">
                 ({filteredProducts.length} {UI_TEXT.ITEMS})
               </span>
@@ -104,14 +107,15 @@ const dispatch = useDispatch<AppDispatch>();
           <div className="mt-4">
             <select
               value={filters.categories[0] || ''}
-             onChange={(e) => {
-  const value = e.target.value;
-  setLocalFilters({
-    ...filters,
-    categories: value ? [value] : [],
-  });
-}}
-
+              onChange={(e) => {
+                const value = e.target.value;
+                setLocalFilters({
+                  ...filters,
+                  categories: value ? [value] : [],
+                });
+                // Update URL to reflect category change
+                router.push(`/catalog?category=${encodeURIComponent(value)}`);
+              }}
               className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Select category"
             >

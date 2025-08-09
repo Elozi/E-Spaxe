@@ -14,8 +14,8 @@ export interface Product {
   description?: string;
   inStock?: boolean;
   features?: string[];
-  specifications?: { [key: string]: string };
-  relatedProducts?: Product[];
+ specifications: Record<string, string>;
+  relatedProducts?: string[];
 
 }
 
@@ -92,7 +92,10 @@ export interface FilterSidebarProps {
 export interface Filters {
   categories: string[];
   materials: string[];
-  priceRange: { min: number; max: number } | null;
+   priceRange?: {
+    min: number;
+    max: number;
+  } | null;
 }
 
 export interface CatalogProps {
@@ -115,3 +118,30 @@ export interface FooterSection {
   title: string;
   links: FooterLink[];
 }
+
+export interface PriceRange {
+  label: string;
+  min: number;
+  max: number;
+}
+
+export interface Filters {
+  categories: string[];
+  materials: string[];
+  subcategories?: string[];
+  // priceRange?: PriceRange | null;
+}
+
+export interface FilterSidebarProps {
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export interface FilterBarProps {
+  categories: string[];
+  onFilterChange: (categories: string[]) => void;
+}
+export type CategoryKey = 'Jewelry' | 'womens-dresses' | 'womens-tops' | 'mens-shirts' | 'mens-t-shirts' | 'bags' | 'shoes' | 'Girls Clothing' |'Boys Clothing' ;
+// export type CategoryKey = 'Jewelry' | 'womens-dresses' | 'Women\'s Tops' | 'mens-shirts' | 'mens-t-shirts' | 'Girls Clothing' | 'Boys Clothing' | 'bags' | 'shoes';

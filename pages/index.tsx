@@ -2,7 +2,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
-import { fetchProducts, filterByCategory, sortByPrice, setPage, ProductState } from '../redux/slices/productSlice';
+import { fetchProducts, ProductState } from '../redux/slices/productSlice';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import Card from '../components/common/Card';
@@ -29,17 +29,17 @@ useEffect(() => {
 }, [dispatch]);
 
 
-  const handleFilterChange = (categories: string[]) => {
-    dispatch(filterByCategory(categories));
-  };
+  // const handleFilterChange = (categories: string[]) => {
+  //   dispatch(filterByCategory(categories));
+  // };
 
-  const handleSortChange = (sortOption: 'price-asc' | 'price-desc') => {
-    dispatch(sortByPrice(sortOption));
-  };
+  // const handleSortChange = (sortOption: 'price-asc' | 'price-desc') => {
+  //   dispatch(sortByPrice(sortOption));
+  // };
 
-  const handlePageChange = (page: number) => {
-    dispatch(setPage(page));
-  };
+  // const handlePageChange = (page: number) => {
+  //   dispatch(setPage(page));
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50">
