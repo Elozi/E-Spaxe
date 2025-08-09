@@ -6,7 +6,7 @@ import { UI_TEXT, FILTER_CATEGORIES, FILTER_MATERIALS, FILTER_PRICE_RANGES } fro
 const FilterSidebar: FC<FilterSidebarProps> = ({ filters, onFilterChange, isOpen, onClose }) => {
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-xl transform transition-transform duration-300 lg:relative lg:transform-none ${
+      className={`fixed inset-y-0 left-0 z-40 w-80 bg-white shadow-xl transform transition-transform duration-300 lg:relative lg:transform-none ${
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}
       role="complementary"

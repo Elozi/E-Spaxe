@@ -1,11 +1,14 @@
 // constants/index.ts
-export const API_URL = 'https://fakestoreapi.com/products'; // Placeholder for fashion API
-
+import { Product } from '../interfaces';
+export const API_URL = 'https://fakestoreapi.com/products';
+ 
 export const UI_TEXT = {
   BRAND_NAME: 'e-spaxe',
+  href:"/",
   WELCOME_MESSAGE: 'Browse the latest fashion for men, women & kids!',
   BUY_NOW: 'Buy Now',
   VIEW_DETAILS: 'View Details',
+  ALL_CATEGORIES: 'All Categories',
   LOADING: 'Loading...',
   ERROR: 'Something went wrong. Please try again.',
   SEARCH: 'Search',
@@ -17,7 +20,7 @@ export const UI_TEXT = {
   QUICK_ADD: 'Quick Add',
   QUICK_VIEW: 'Quick View',
   VIEW_ALL: 'View All',
-   FILTERS: 'Filters',
+  FILTERS: 'Filters',
   CATEGORY: 'Category',
   MATERIAL: 'Material',
   PRICE_RANGE: 'Price Range',
@@ -30,11 +33,28 @@ export const UI_TEXT = {
   FOOTER_ADDRESS: '1093 Hood Avenue, CA',
   FOOTER_HOURS: 'All Day: 9:00AM - 22:00PM',
   FOOTER_COPYRIGHT: '© 2025 e-spaxe. All rights reserved.',
-  
+  ADD_TO_CART: 'Add to Cart',
+  ADD_TO_WISHLIST: 'Add to Wishlist',
+  REMOVE_FROM_WISHLIST: 'Remove from Wishlist',
+  SHARE: 'Share',
+   TOTAL: 'Total',
+  SHIPPING: 'Shipping',
+  SHIPPING_CALCULATED_AT_CHECKOUT: 'Shipping & taxes calculated at checkout',
+  FREE_SHIPPING: 'Free Shipping',
+  SPEND: 'Spend',
+  FOR: 'for',
+  CONTINUE_SHOPPING: 'Continue Shopping',
+  VIEW_CART: 'View Cart',
+  PROCEED_TO_CHECKOUT: 'Proceed to Checkout',
+  FREE_SHIPPING_ELIGIBLE: 'Free shipping for any orders above $1,000.00',
+  PRODUCT: 'Product',
+  PRICE: 'Price',
+  QTY: 'Qty',
+  HOME: 'Home',
 };
 
 export const NAV_ITEMS = [
-   { label: 'Home', href: '/' },
+  { label: 'Home', href: '/' },
   {
     label: 'Collections',
     hasDropdown: true,
@@ -104,10 +124,7 @@ export const NAV_ITEMS = [
     label: 'Pages',
     hasDropdown: true,
     dropdownContent: [
-      {
-        title: 'Shop Pages',
-        links: ['Shop by Gender', 'Shop by Age', 'Shop Grid', 'Shop Filters'],
-      },
+
       {
         title: 'Customer Pages',
         links: ['Account', 'Login', 'Register', 'Wishlist', 'Compare', 'Checkout'],
@@ -115,20 +132,6 @@ export const NAV_ITEMS = [
       {
         title: 'Info Pages',
         links: ['About Us', 'Contact', 'FAQ', 'Size Guide', 'Shipping & Returns', 'Privacy Policy'],
-      },
-    ],
-  },
-  {
-    label: 'Blog',
-    hasDropdown: true,
-    dropdownContent: [
-      {
-        title: 'Blog Categories',
-        links: ['Styling Tips', 'Family Fashion', 'Sustainable Fashion', 'Behind the Brand'],
-      },
-      {
-        title: 'Blog Posts',
-        links: ['Single Post', 'Post with Gallery', 'Post with Video', 'Post with Interview'],
       },
     ],
   },
@@ -240,12 +243,18 @@ export const FILTER_PRICE_RANGES = [
   { label: '$100 - $200', min: 100, max: 200 },
   { label: 'Over $200', min: 200, max: Infinity },
 ];
+export const CATEGORIES_META = [
+  { id: 1, name: 'Necklaces', slug: 'jewelery' },
+  { id: 2, name: 'Earrings', slug: 'earrings' },
+  { id: 3, name: 'Bracelets', slug: 'bracelets' },
+  { id: 4, name: 'Rings', slug: 'rings' },
+];
 export const CATEGORIES = [
   {
     id: 1,
     name: 'Necklaces',
-    slug: 'necklaces',
-    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    slug: 'jewelery',
+    image: 'https://dummyjson.com/image-link-from-jewelry-product.jpg',
   },
   {
     id: 2,
@@ -294,5 +303,196 @@ export const FOOTER_SECTIONS = [
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Gift Card', href: '/gift-card' },
     ],
+  },
+];
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: '1',
+    name: 'Gold Solitaire Necklace',
+    price: 199.99,
+    originalPrice: 249.99,
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&rotate=90',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&scale=1.2',
+    ],
+    rating: 4.8,
+    reviews: 1234,
+    isWishlisted: false,
+    category: 'Necklaces',
+    material: 'Gold',
+    description: 'Elegant gold solitaire necklace with a sparkling pendant, perfect for any occasion.',
+    inStock: true,
+    features: [
+      '18K Gold',
+      'Single Diamond Pendant',
+      'Adjustable Chain',
+      'Hypoallergenic',
+    ],
+    specifications: {
+      Material: '18K Gold',
+      Pendant: '0.5 Carat Diamond',
+      ChainLength: '16-18 inches',
+      Weight: '10g',
+    },
+    relatedProducts: [],
+  },
+  {
+    id: '1',
+    name: 'Gold Solitaire Necklace',
+    price: 199.99,
+    originalPrice: 249.99,
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&rotate=90',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&scale=1.2',
+    ],
+    rating: 4.8,
+    reviews: 1234,
+    isWishlisted: false,
+    category: 'Necklaces',
+    material: 'Gold',
+    description: 'Elegant gold solitaire necklace with a sparkling pendant, perfect for any occasion.',
+    inStock: true,
+    features: [
+      '18K Gold',
+      'Single Diamond Pendant',
+      'Adjustable Chain',
+      'Hypoallergenic',
+    ],
+    specifications: {
+      Material: '18K Gold',
+      Pendant: '0.5 Carat Diamond',
+      ChainLength: '16-18 inches',
+      Weight: '10g',
+    },
+    relatedProducts: [],
+  },
+  {
+    id: '1',
+    name: 'Gold Solitaire Necklace',
+    price: 199.99,
+    originalPrice: 249.99,
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&rotate=90',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&scale=1.2',
+    ],
+    rating: 4.8,
+    reviews: 1234,
+    isWishlisted: false,
+    category: 'Necklaces',
+    material: 'Gold',
+    description: 'Elegant gold solitaire necklace with a sparkling pendant, perfect for any occasion.',
+    inStock: true,
+    features: [
+      '18K Gold',
+      'Single Diamond Pendant',
+      'Adjustable Chain',
+      'Hypoallergenic',
+    ],
+    specifications: {
+      Material: '18K Gold',
+      Pendant: '0.5 Carat Diamond',
+      ChainLength: '16-18 inches',
+      Weight: '10g',
+    },
+    relatedProducts: [],
+  },
+  {
+    id: '1',
+    name: 'Gold Solitaire Necklace',
+    price: 199.99,
+    originalPrice: 249.99,
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&rotate=90',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&scale=1.2',
+    ],
+    rating: 4.8,
+    reviews: 1234,
+    isWishlisted: false,
+    category: 'Necklaces',
+    material: 'Gold',
+    description: 'Elegant gold solitaire necklace with a sparkling pendant, perfect for any occasion.',
+    inStock: true,
+    features: [
+      '18K Gold',
+      'Single Diamond Pendant',
+      'Adjustable Chain',
+      'Hypoallergenic',
+    ],
+    specifications: {
+      Material: '18K Gold',
+      Pendant: '0.5 Carat Diamond',
+      ChainLength: '16-18 inches',
+      Weight: '10g',
+    },
+    relatedProducts: [],
+  },
+  {
+    id: '1',
+    name: 'Gold Solitaire Necklace',
+    price: 199.99,
+    originalPrice: 249.99,
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&rotate=90',
+      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop&scale=1.2',
+    ],
+    rating: 4.8,
+    reviews: 1234,
+    isWishlisted: false,
+    category: 'Necklaces',
+    material: 'Gold',
+    description: 'Elegant gold solitaire necklace with a sparkling pendant, perfect for any occasion.',
+    inStock: true,
+    features: [
+      '18K Gold',
+      'Single Diamond Pendant',
+      'Adjustable Chain',
+      'Hypoallergenic',
+    ],
+    specifications: {
+      Material: '18K Gold',
+      Pendant: '0.5 Carat Diamond',
+      ChainLength: '16-18 inches',
+      Weight: '10g',
+    },
+    relatedProducts: [],
+  },
+  {
+    id: '2',
+    name: 'Silver Hoop Earrings',
+    price: 79.99,
+    originalPrice: 99.99,
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=500&fit=crop&crop=center',
+    images: [
+      'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&h=600&fit=crop&rotate=90',
+    ],
+    rating: 4.5,
+    reviews: 567,
+    isWishlisted: false,
+    category: 'Earrings',
+    material: 'Silver',
+    description: 'Stylish silver hoop earrings, lightweight and versatile for everyday wear.',
+    inStock: true,
+    features: [
+      '925 Sterling Silver',
+      'Lightweight Design',
+      'Secure Clasp',
+    ],
+    specifications: {
+      Material: '925 Sterling Silver',
+      Diameter: '30mm',
+      Weight: '5g',
+    },
+    relatedProducts: [],
   },
 ];

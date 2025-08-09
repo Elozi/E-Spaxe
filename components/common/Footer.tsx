@@ -20,7 +20,7 @@ const Footer: FC = () => {
   };
 
   return (
-    <footer className="bg-gray-50 pt-16 pb-8" role="contentinfo">
+    <footer className="bg-gray-50 pt-16 pb-8 bg-gray-900" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-1">

@@ -3,12 +3,17 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Search, User, Heart, ShoppingBag, ChevronDown } from 'lucide-react';
 import { NavItem, DropdownSection } from '../interfaces';
+import { RootState } from '../redux/store';
 import { NAV_ITEMS, UI_TEXT } from '../constants';
+import { useSelector } from 'react-redux';
+import CartModal from './common/CartModal';
 
 const Navbar: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
+   const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartItemCount = useSelector((state: RootState) => state.cart.itemCount);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,13 +23,14 @@ const Navbar: FC = () => {
     }
   };
 
-  const handleNavClick = (link: string, sectionTitle: string) => {
-    let category = link.toLowerCase().replace(' ', '-');
-    if (sectionTitle === 'Women' || sectionTitle === 'Men' || sectionTitle === 'Kids') {
+    const handleNavClick = (link: string, sectionTitle: string) => {
+    let category = link.toLowerCase().replace(/'s /g, '-').replace(/ /g, '-');
+    if (['Women', 'Men', 'Kids'].includes(sectionTitle)) {
       category = `${sectionTitle.toLowerCase()}-${category}`;
     }
     router.push(`/catalog?category=${encodeURIComponent(category)}`);
   };
+
  const handleNavItemClick = (href: string | undefined) => {
     if (href) {
       router.push(href);
@@ -32,9 +38,12 @@ const Navbar: FC = () => {
     }
   };
     return (
-    <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-4" aria-label="Main navigation">
+    <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-4 bg-gray-900" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="text-white text-2xl font-light tracking-wider">{UI_TEXT.BRAND_NAME}</div>
+        <div className="text-white text-2xl font-light tracking-wider cursor-pointer"
+         onClick={() => router.push('/')}>
+          {UI_TEXT.BRAND_NAME}
+          </div>
         <div className="hidden md:flex items-center space-x-8">
           {NAV_ITEMS.map((item: NavItem, index: number) => (
             <div key={index} className="relative group">
@@ -100,11 +109,17 @@ const Navbar: FC = () => {
               0
             </span>
           </button>
-          <button className="text-white/90 hover:text-white transition-colors duration-200 relative" aria-label={UI_TEXT.CART}>
+             <button
+            onClick={() => setIsCartOpen(true)}
+            className="text-gray-600 hover:text-gray-900 transition-colors duration-200 relative"
+            aria-label={UI_TEXT.CART}
+          >
             <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              0
-            </span>
+            {cartItemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
           </button>
           <button
             className="md:hidden text-white/90 hover:text-white"
@@ -128,11 +143,12 @@ const Navbar: FC = () => {
                 <button
                   className="block text-white/90 hover:text-white transition-colors duration-200 py-2"
                   role="menuitem"
+                  onClick={() => handleNavItemClick(item.href)}
                 >
                   {item.label}
                 </button>
                 {item.hasDropdown && item.dropdownContent && (
-                  <div className="pl-4 space-y-2">
+                  <div className="pl-4 space-y-2 ">
                     {item.dropdownContent.map((section, sectionIndex) => (
                       <div key={sectionIndex}>
                         <h4 className="text-gray-400 text-sm mt-2">{section.title}</h4>

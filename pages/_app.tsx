@@ -12,7 +12,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
     <Provider store={store}>
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow pt-16">
           <Component {...pageProps} />
         </main>
         <Footer />

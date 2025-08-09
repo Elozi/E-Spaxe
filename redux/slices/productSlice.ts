@@ -1,14 +1,16 @@
 // redux/slices/productSlice.ts
 import { createSlice, createAsyncThunk,PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Product,Filters } from '../../interfaces';
-import { API_URL } from '../../constants';
+import { Product,Filters, Category } from '../../interfaces';
+import { API_URL,MOCK_PRODUCTS  } from '../../constants';
 
 export interface ProductState {
   products: Product[];
   newArrivals: Product[];
+  categories: Category[];
   filteredProducts: Product[];
   loading: boolean;
+  product: Product | null;
   error: string | null;
   currentPage: number;
   totalPages: number;
@@ -17,26 +19,130 @@ export interface ProductState {
 const initialState: ProductState = {
   products: [],
   newArrivals: [],
+  categories:[],
   filteredProducts: [],
   loading: false,
+  product: null,
   error: null,
   currentPage: 1,
   totalPages: 1,
 };
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get<Product[]>(API_URL);
-  console.log('Fetched new arrivals:', response.data);
-  return response.data.map((p) => ({
-    ...p,
-    id: p.id.toString(),
-    isWishlisted: false,
-    reviews: Math.floor(Math.random() * 200) + 50,
-    material: ['cotton', 'polyester', 'leather', 'denim', 'silk', 'gold', 'silver'][Math.floor(Math.random() * 7)],
-    originalPrice: Math.random() > 0.7 ? p.price * 1.2 : undefined,
-  }));
-});
+// export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+//   const response = await axios.get<Product[]>(API_URL);
+//   console.log('Fetched new arrivals:', response.data);
+//   return response.data.map((p) => ({
+//     ...p,
+//     id: p.id.toString(),
+//     isWishlisted: false,
+//     reviews: Math.floor(Math.random() * 200) + 50,
+//     material: ['cotton', 'polyester', 'leather', 'denim', 'silk', 'gold', 'silver'][Math.floor(Math.random() * 7)],
+//     originalPrice: Math.random() > 0.7 ? p.price * 1.2 : undefined,
+//   }));
+// });
+// export const fetchProducts = createAsyncThunk(
+//   'products/fetchProducts',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${API_URL}/products?limit=0`);
+//       return response.data.products.map((p: any) => ({
+//         id: p.id.toString(),
+//         name: p.title,
+//         description: p.description,
+//         price: p.price,
+//         originalPrice: p.price * (1 + (p.discountPercentage ?? 0) / 100),
+//         images: p.images,
+//         image: p.thumbnail,
+//         rating: p.rating,
+//         reviews: p.rating && Math.floor(p.rating * 20),
+//         isWishlisted: false,
+//         category: p.category,
+//         material: p.brand,
+//         inStock: p.stock > 0,
+//         features: [],
+//         specifications: {},
+//       }));
+//     } catch (err) {
+//       return rejectWithValue('Failed to fetch products');
+//     }
+//   }
+// );
 
+export const fetchProductById = createAsyncThunk(
+  'products/fetchProductById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/products/${id}`);
+      const p = res.data;
+      return {
+        id: p.id.toString(),
+        name: p.title,
+        description: p.description,
+        price: p.price,
+        originalPrice: p.price * (1 + (p.discountPercentage ?? 0) / 100),
+        images: p.images,
+        image: p.thumbnail,
+        rating: p.rating,
+        reviews: p.rating && Math.floor(p.rating * 20),
+        isWishlisted: false,
+        category: p.category,
+        material: p.brand,
+        inStock: p.stock > 0,
+        features: [],
+        specifications: {},
+      };
+    } catch (err) {
+      return rejectWithValue('Failed to fetch product');
+    }
+  }
+);
+export const fetchProducts = createAsyncThunk(
+  'products/fetchProducts',
+  async (category?: string) => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products${category ? `/category/${category}` : ''}`);
+      if (!response.ok) throw new Error('Failed to fetch products from FakeStore API');
+      const data = await response.json();
+      // Combine with mock data for enrichment
+      const enrichedProducts = [...data, ...MOCK_PRODUCTS].map((prod, index) => ({
+        ...prod,
+        id: prod.id || `mock_${index}`, // Ensure unique IDs
+        image: prod.image || prod.images?.[0] || 'https://via.placeholder.com/150',
+        category: prod.category || prod.category || 'Uncategorized',
+        material: prod.material || 'Unknown',
+        rating: prod.rating?.rate || Math.random() * 5,
+      }));
+      return enrichedProducts;
+    } catch (error) {
+      console.error('FakeStore API error, falling back to mock data:', error);
+      return MOCK_PRODUCTS.map((prod, index) => ({
+        ...prod,
+        id: prod.id || `mock_${index}`, // Ensure unique IDs
+        image: prod.image || prod.images?.[0] || 'https://via.placeholder.com/150',
+      }));
+    }
+  }
+);
+
+export const fetchCategories = createAsyncThunk(
+  'products/fetchCategories',
+  async () => {
+    try {
+      const response = await fetch('https://fakestoreapi.com/products/categories');
+      if (!response.ok) throw new Error('Failed to fetch categories from FakeStore API');
+      const categories = await response.json();
+      return categories.map((cat: string) => ({ slug: cat, name: cat }));
+    } catch (error) {
+      console.error('FakeStore API categories error, using mock categories:', error);
+      // Derive categories from MOCK_PRODUCTS as fallback
+      const mockCategories = [...new Set(MOCK_PRODUCTS.map((p) => p.category))].map((cat) => ({
+        slug: cat.toLowerCase().replace(/ /g, '-'),
+        name: cat,
+      }));
+      return mockCategories;
+    }
+  }
+);
 export const fetchNewArrivals = createAsyncThunk('products/fetchNewArrivals', async () => {
   const response = await axios.get<Product[]>(`${API_URL}?limit=5`);
   return response.data.map((p) => ({
@@ -50,6 +156,8 @@ export const fetchNewArrivals = createAsyncThunk('products/fetchNewArrivals', as
   }));
   console.log( response.data)
 });
+
+
 
 const productSlice = createSlice({
   name: 'products',
@@ -147,6 +255,32 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch new arrivals';
       })
+       .addCase(fetchCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
+        state.loading = false;
+        state.categories = action.payload;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch categories';
+      })
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.product = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.product = action.payload;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+      
   },
 });
 

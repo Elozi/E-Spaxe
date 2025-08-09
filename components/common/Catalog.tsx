@@ -3,31 +3,38 @@ import { FC, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search, Filter, Grid, List } from 'lucide-react';
 import { RootState } from '../../redux/store';
-import { setFilters, setSort } from '../../redux/slices/productSlice';
+import { setFilters, setSort, fetchProducts, fetchCategories } from '../../redux/slices/productSlice';
 import ProductCard from './ProductCard';
 import FilterSidebar from './FilterSidebar';
 import LoadingSpinner from './LoadingSpinner';
-import { UI_TEXT } from '../../constants';
+import { UI_TEXT,MOCK_PRODUCTS } from '../../constants';
 import { CatalogProps, Filters } from '../../interfaces';
-import Navbar from '../Navbar';
+import type { AppDispatch } from '../../redux/store';
 
-const Catalog: FC<CatalogProps> = ({ category, searchQuery: initialSearchQuery }) => {
-  const dispatch = useDispatch();
-  const { filteredProducts, loading, error } = useSelector((state: RootState) => state.products);
+const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: initialSearchQuery }) => {
+  
+const dispatch = useDispatch<AppDispatch>();
+  const { filteredProducts, categories, loading, error } = useSelector((state: RootState) => state.products);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery || '');
   const [showFilters, setShowFilters] = useState(false);
-const [filters, setLocalFilters] = useState<Filters>({
-  categories: category ? [category] : [],
-  materials: [],
-  priceRange: null,
-});
+  const [filters, setLocalFilters] = useState<Filters>({
+    categories: initialCategory ? [initialCategory] : [],
+    materials: [],
+    priceRange: null,
+  });
 
-
+  // Fetch categories and products on mount or category change
   useEffect(() => {
-    dispatch(setFilters({ filters, searchQuery, category }));
-  }, [dispatch, filters, searchQuery, category]);
+    dispatch(fetchCategories());
+    dispatch(fetchProducts(initialCategory));
+  }, [dispatch, initialCategory]);
+
+  // Update filters and search when they change
+  useEffect(() => {
+    dispatch(setFilters({ filters, searchQuery, category: initialCategory }));
+  }, [dispatch, filters, searchQuery, initialCategory]);
 
   const handleSortChange = (value: 'featured' | 'price-low' | 'price-high' | 'rating') => {
     setSortBy(value);
@@ -36,12 +43,11 @@ const [filters, setLocalFilters] = useState<Filters>({
 
   return (
     <div className="min-h-screen bg-gray-50">
-        {/* <Navbar></Navbar> */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">{category || 'Shop'}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{initialCategory || 'Shop'}</h1>
               <span className="text-sm text-gray-500">
                 ({filteredProducts.length} {UI_TEXT.ITEMS})
               </span>
@@ -93,6 +99,29 @@ const [filters, setLocalFilters] = useState<Filters>({
                 <Filter className="w-4 h-4" />
               </button>
             </div>
+          </div>
+          {/* Category Filter Dropdown */}
+          <div className="mt-4">
+            <select
+              value={filters.categories[0] || ''}
+             onChange={(e) => {
+  const value = e.target.value;
+  setLocalFilters({
+    ...filters,
+    categories: value ? [value] : [],
+  });
+}}
+
+              className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Select category"
+            >
+              <option value="">{UI_TEXT.ALL_CATEGORIES}</option>
+              {categories.map((cat) => (
+                <option key={cat.slug} value={cat.slug}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </header>

@@ -1,16 +1,22 @@
 // interfaces/index.ts
 export interface Product {
-  id: string; 
+   id: string;
   name: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  image: string; 
+  images?: string[]; 
   rating: number;
-  reviews?: number;
-  isWishlisted?: boolean; 
+  reviews?: number; 
+  isWishlisted?: boolean;
   category: string;
   material: string;
   description?: string;
+  inStock?: boolean;
+  features?: string[];
+  specifications?: { [key: string]: string };
+  relatedProducts?: Product[];
+
 }
 
 export interface CardProps {
@@ -46,6 +52,7 @@ export interface LoadingSpinnerProps {
 export interface NavItem {
   label: string;
   hasDropdown?: boolean;
+   href?: string;
   dropdownContent?: DropdownSection[];
 }
 
