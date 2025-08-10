@@ -26,11 +26,12 @@ const ProductPage: FC<ProductPageProps> = ({ product: initialProduct }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchProductById(id as string) as any);
-    }
-  }, [dispatch, id]);
+useEffect(() => {
+  if (id) {
+    dispatch(fetchProductById(id as string) as unknown as ReturnType<typeof dispatch>);
+  }
+}, [dispatch, id]);
+
 
   const currentProduct = product || initialProduct;
 
