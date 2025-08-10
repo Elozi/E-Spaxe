@@ -40,7 +40,6 @@ const Catalog: FC<CatalogProps> = ({
       fetchProducts({
         category: initialCategory,
         subCategory: initialSubCategory,
-        product: initialProduct,
         collections: initialCollections,
       })
     );
@@ -55,25 +54,57 @@ const Catalog: FC<CatalogProps> = ({
     dispatch(setSort(value));
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
+const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setSearchQuery(value);
 
-  const handleCategoryChange = (value: string) => {
-    const newFilters = {
-      ...filters,
-      categories: value ? [value] : [],
-      subCategories: [],
-      products: [],
-      collections: [],
-    };
-    setLocalFilters(newFilters);
-    router.push(
-      `/catalog${value ? `?category=${encodeURIComponent(value)}` : ''}`,
-      undefined,
-      { shallow: true }
-    );
+  // Reset all filters except search
+  const emptyFilters: Filters = {
+    categories: [],
+    subCategories: [],
+    products: [],
+    collections: [],
+    materials: [],
+    priceRange: null,
   };
+  setLocalFilters(emptyFilters);
+
+  // Update URL to only have search param
+  router.push(`/catalog?search=${encodeURIComponent(value)}`, undefined, { shallow: true });
+
+  // Fetch all products and filter by search
+  dispatch(fetchProducts({}));
+  dispatch(setFilters({ filters: emptyFilters, searchQuery: value, category: undefined }));
+};
+
+  const handleCategoryChange = (newCategories: string[]) => {
+  const newFilters = {
+    ...filters,
+    categories: newCategories,
+    subCategories: [],
+    products: [],
+    collections: [],
+  };
+  setLocalFilters(newFilters);
+
+  // Update URL
+  router.push(
+    `/catalog${newCategories.length ? `?category=${encodeURIComponent(newCategories[0])}` : ''}`,
+    undefined,
+    { shallow: true }
+  );
+
+  // Always fetch all products and then filter
+  dispatch(fetchProducts({}));
+  dispatch(setFilters({ filters: newFilters, searchQuery, category: newCategories[0] }));
+};
+
+const handleSidebarChange = (newFilters: Filters) => {
+  setLocalFilters(newFilters);
+  // Always fetch all products and then filter
+  dispatch(fetchProducts({}));
+  dispatch(setFilters({ filters: newFilters, searchQuery, category: newFilters.categories[0] }));
+};
 
   const handleSubCategoryChange = (value: string) => {
     const newFilters = {
@@ -191,7 +222,7 @@ const Catalog: FC<CatalogProps> = ({
           <div className="mt-4">
             <select
               value={filters.categories[0] || ''}
-              onChange={(e) => handleCategoryChange(e.target.value)}
+              onChange={(e) => handleCategoryChange([e.target.value])}
               className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Select category"
             >
@@ -260,6 +291,12 @@ const Catalog: FC<CatalogProps> = ({
           </div>
         </div>
       </div>
+      <FilterSidebar
+  filters={filters}
+  onFilterChange={handleSidebarChange}
+  isOpen={showFilters}
+  onClose={() => setShowFilters(false)}
+/>
     </div>
   );
 };

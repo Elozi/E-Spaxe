@@ -1,24 +1,31 @@
-// components/common/HeroSection.tsx
 import { FC } from 'react';
+import { useRouter } from 'next/router';
 import { HERO_CONTENT } from '../constants';
-import Button from './common/Button';
+import Button from '../components/common/Button';
 
 const HeroSection: FC = () => {
+  const router = useRouter();
+
+  const handleShopNow = () => {
+    router.push('/products');
+  };
+
   return (
     <div className="relative min-h-screen flex items-center">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSIjRjVGNUY1Ii8+CjxjaXJjbGUgY3g9IjE0NDAiIGN5PSI1NDAiIHI9IjIwMCIgZmlsbD0iI0VCRUJFQiIvPgo8Y2lyY2xlIGN4PSI0ODAiIGN5PSI3MjAiIHI9IjEyMCIgZmlsbD0iI0U1RTVFNSIvPgo8L3N2Zz4K')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-      </div>
+     <div
+  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: `url('https://indian-retailer.s3.ap-south-1.amazonaws.com/s3fs-public/2022-05/value%20fashion.jpg')`,
+  }}
+>
+  {/* Dark overlay */}
+  <div className="absolute inset-0 bg-black/80"></div>
+</div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-5 py-10">
-        <div className="max-w-">
+        <div>
           <div className="mb-4">
             <span className="text-rose-400 text-sm font-medium tracking-wider uppercase">
               {HERO_CONTENT.tagline}
@@ -33,10 +40,13 @@ const HeroSection: FC = () => {
           <p className="text-white/80 text-base leading-relaxed mb-8 max-w-md">
             {HERO_CONTENT.description}
           </p>
-          <Button className="group bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 flex items-center space-x-2">
-            <span>{HERO_CONTENT.buttonText}</span>
+          <Button
+            className="group bg-white px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 flex items-center space-x-2"
+            onClick={handleShopNow}
+          >
+            <span className="text-gray-900">{HERO_CONTENT.buttonText}</span>
             <svg
-              className="w-4 h-4 transition-transform group-hover:translate-x-1"
+              className="w-4 h-4 transition-transform group-hover:translate-x-1 text-gray-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

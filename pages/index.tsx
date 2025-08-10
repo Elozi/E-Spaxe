@@ -46,7 +46,7 @@ useEffect(() => {
       
       <Navbar />
       <HeroSection />
-       <CategoryGrid />
+       {/* <CategoryGrid /> */}
       <NewArrivals />
       {/* <section className="max-w-7xl mx-auto px-6 py-12">
         <h2 className="text-2xl font-semibold mb-6 text-gray-900">{UI_TEXT.WELCOME_MESSAGE}</h2>

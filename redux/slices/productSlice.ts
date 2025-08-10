@@ -13,6 +13,7 @@ export interface ProductState {
   error: string | null;
   currentPage: number;
   totalPages: number;
+  allLoaded: boolean; 
 }
 
 const initialState: ProductState = {
@@ -25,6 +26,7 @@ const initialState: ProductState = {
   error: null,
   currentPage: 1,
   totalPages: 1,
+  allLoaded: false,
 };
 
 export const fetchCategories = createAsyncThunk('products/fetchCategories', async () => {
@@ -126,35 +128,34 @@ setFilters: (
   }
 
   // Apply subcategory filter
-  if (filters.subCategories && filters.subCategories.length > 0) {
-    filtered = filtered.filter(
-      (product) =>
-        product.subCategory &&
-      filters.subCategories &&
-        filters.subCategories.includes(product.subCategory.toLowerCase())
-    );
-  }
+if (filters.subCategories && filters.subCategories.length > 0) {
+  const subCategoriesLower = filters.subCategories.map(s => s.toLowerCase());
+  filtered = filtered.filter(
+    (product) =>
+      product.subCategory &&
+      subCategoriesLower.includes(product.subCategory.toLowerCase())
+  );
+}
 
-  // Apply product filter
-  if (filters.products && filters.products.length > 0) {
-    filtered = filtered.filter(
-      (product) =>
-        product.product &&
-        filters.products &&
-        filters.products.includes(product.product.toLowerCase())
-    );
-  }
+// Apply product filter
+if (filters.products && filters.products.length > 0) {
+  const productsLower = filters.products.map(p => p.toLowerCase());
+  filtered = filtered.filter(
+    (product) =>
+      product.product &&
+      productsLower.includes(product.product.toLowerCase())
+  );
+}
 
-  // Apply collections filter
-  if (filters.collections && filters.collections.length > 0) {
-    filtered = filtered.filter(
-      (product) =>
-        product.collections &&
-      filters.collections &&
-        filters.collections.includes(product.collections.toLowerCase())
-    );
-  }
-
+// Apply collections filter
+if (filters.collections && filters.collections.length > 0) {
+  const collectionsLower = filters.collections.map(c => c.toLowerCase());
+  filtered = filtered.filter(
+    (product) =>
+      product.collections &&
+      collectionsLower.includes(product.collections.toLowerCase())
+  );
+}
   // Apply material filter
   if (filters.materials.length > 0) {
     filtered = filtered.filter(
@@ -187,6 +188,7 @@ setFilters: (
   state.currentPage = 1;
   state.totalPages = Math.ceil(filtered.length / 6);
   state.filteredProducts = filtered.slice(0, 6);
+    state.allLoaded = state.filteredProducts.length >= filtered.length;
 },
     setSort: (state, action: PayloadAction<'featured' | 'price-low' | 'price-high' | 'rating'>) => {
       const sortBy = action.payload;
@@ -244,8 +246,15 @@ setFilters: (
       state.filteredProducts = [...state.filteredProducts].sort((a, b) =>
         action.payload === 'price-asc' ? a.price - b.price : b.price - a.price
       );
-      state.totalPages = Math.ceil(state.filteredProducts.length / 6);
-      state.filteredProducts = state.filteredProducts.slice(0, 6);
+      state.totalPages = Math.ceil(state.filteredProducts.length / 9);
+      state.filteredProducts = state.filteredProducts.slice(0, 9);
+    },
+     loadMoreProducts: (state) => {
+      state.currentPage += 1;
+      const filtered = [...state.products]; // Use filtered products
+      state.filteredProducts = filtered.slice(0, state.currentPage * 6);
+      state.totalPages = Math.ceil(filtered.length / 6);
+      state.allLoaded = state.filteredProducts.length >= filtered.length;
     },
   },
   extraReducers: builder => {
@@ -308,5 +317,5 @@ setFilters: (
   },
 });
 
-export const { setFilters, setSort, toggleWishlist, setPage, filterByCategory, sortByPrice } = productSlice.actions;
+export const { setFilters, setSort, toggleWishlist, setPage, filterByCategory, sortByPrice,loadMoreProducts } = productSlice.actions;
 export default productSlice.reducer;
