@@ -24,44 +24,51 @@ const Navbar: FC = () => {
     }
   };
 
-  // const handleNavClick = (link: string, sectionTitle: string) => {
-  //   let category = link.toLowerCase().replace(/'s /g, '-').replace(/ /g, '-');
-  //   if (['Women', 'Men', 'Kids'].includes(sectionTitle)) {
-  //     category = `${sectionTitle.toLowerCase()}-${category}`;
-  //   }
-  //   router.push(`/catalog?category=${encodeURIComponent(category)}`);
-  // };
+  // ...existing code...
+const handleNavClick = (link: string, sectionTitle: string, label: string) => {
+  // For Collections, filter by collection
+  if (sectionTitle === 'Collections') {
+    router.push(`/catalog?category=${encodeURIComponent(label)}&collections=${encodeURIComponent(link)}`);
+    return;
+  }
+  // For Clothing/Accessories, filter by product
+  router.push(`/catalog?category=${encodeURIComponent(label)}&subCategory=${encodeURIComponent(sectionTitle)}&product=${encodeURIComponent(link)}`);
+};
 
+//   const categoryMap: Record<string, string> = {
+//     Necklaces: 'jewelery',
+//     Earrings: 'jewelery',
+//     Bracelets: 'jewelery',
+//     Rings: 'jewelery',
+//     Watches: 'watches',
+//     Dresses: 'womens-dresses',
+//     Tops: 'womens-tops',
+//     Pants: 'womens-pants',
+//     Skirts: 'womens-skirts',
+//     Outerwear: 'womens-outerwear',
+//     Activewear: 'womens-activewear',
+//     Shirts: 'mens-shirts',
+//     'T-Shirts': 'mens-t-shirts',
+//     Jeans: 'mens-jeans',
+//     Jackets: 'mens-jackets',
+//     Suits: 'mens-suits',
+//     Bags: 'bags',
+//     Shoes: 'shoes',
+//     Sunglasses: 'sunglasses',
+//     Hats: 'hats',
+//   };
 
-  const handleNavClick = (link: string, sectionTitle: string) => {
-    let categorySlug: string;
-    
-    // Map navbar links to category slugs
-    const categoryMap: Record<string, string> = {
-      Necklaces: 'jewelery',
-      Earrings: 'jewelery',
-      Bracelets: 'jewelery',
-      Rings: 'jewelery',
-      Watches: 'jewelery',
-      Dresses: 'womens-dresses',
-      Tops: 'womens-tops',
-      Shirts: 'mens-shirts',
-      'T-Shirts': 'mens-t-shirts',
-      Bags: 'bags',
-      Shoes: 'shoes',
-    };
-    
-    // Use the mapped slug or convert the link to a slug
-    categorySlug = categoryMap[link] || link.toLowerCase().replace(/'s /g, '-').replace(/ /g, '-');
-    
-    // If the section is Women, Men, or Kids, prepend the section title
-    if (['Women', 'Men', 'Kids'].includes(sectionTitle)) {
-      categorySlug = `${sectionTitle.toLowerCase()}-${link.toLowerCase().replace(/'s /g, '-').replace(/ /g, '-')}`;
-    }
+//   let categorySlug = categoryMap[link] || link.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
 
-    router.push(`/catalog?category=${encodeURIComponent(categorySlug)}`);
-  };
-    const handleNavItemClick = (href: string | undefined) => {
+//   if (['Women', 'Men'].includes(sectionTitle)) {
+//     categorySlug = `${sectionTitle.toLowerCase()}-${link.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`;
+//   }
+
+//   router.push(`/catalog?category=${encodeURIComponent(categorySlug)}`);
+// };
+// ...existing code...
+
+  const handleNavItemClick = (href: string | undefined) => {
     if (href) {
       router.push(href);
       setIsMenuOpen(false);
@@ -75,14 +82,12 @@ const Navbar: FC = () => {
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 bg-gray-900" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div 
+        <div
           className="text-white text-xl sm:text-2xl font-light tracking-wider cursor-pointer"
           onClick={() => router.push('/')}
         >
           {UI_TEXT.BRAND_NAME}
         </div>
-
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
           {NAV_ITEMS.map((item: NavItem, index: number) => (
             <div key={index} className="relative group">
@@ -96,11 +101,11 @@ const Navbar: FC = () => {
               </button>
               {item.hasDropdown && item.dropdownContent && (
                 <div
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-[800px] bg-white rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100"
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 w-[500px] bg-white rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100"
                   role="menu"
                 >
                   <div className="p-8">
-                    <div className="grid grid-cols-5 gap-8">
+                    <div className="grid grid-cols-4 gap-40">
                       {item.dropdownContent.map((section: DropdownSection, sectionIndex: number) => (
                         <div key={sectionIndex} className="space-y-4">
                           <h3 className="text-gray-900 font-medium text-sm tracking-wide uppercase border-b border-gray-200 pb-2">
@@ -110,11 +115,11 @@ const Navbar: FC = () => {
                             {section.links.map((link, linkIndex) => (
                               <li key={linkIndex} role="menuitem">
                                 <button
-                                  onClick={() => handleNavClick(link, section.title)}
-                                  className="text-gray-600 hover:text-gray-900 transition-colors duration-200 text-sm leading-relaxed block py-1 hover:translate-x-1 transform transition-transform"
-                                >
-                                  {link}
-                                </button>
+      onClick={() => handleNavClick(link, section.title, item.label)}
+      className="text-gray-600 hover:text-gray-900 transition-colors duration-200 text-sm leading-relaxed block py-1 hover:translate-x-1 transform transition-transform"
+    >
+      {link}
+    </button>
                               </li>
                             ))}
                           </ul>
@@ -127,8 +132,6 @@ const Navbar: FC = () => {
             </div>
           ))}
         </div>
-
-        {/* Right side icons and search */}
         <div className="flex items-center space-x-3 sm:space-x-4">
           <form onSubmit={handleSearch} className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/90 w-4 h-4 sm:w-5 sm:h-5" />
@@ -141,18 +144,15 @@ const Navbar: FC = () => {
               aria-label={UI_TEXT.SEARCH}
             />
           </form>
-          
           <button className="text-white/90 hover:text-white transition-colors duration-200" aria-label={UI_TEXT.ACCOUNT}>
             <User className="w-5 h-5" />
           </button>
-          
           <button className="text-white/90 hover:text-white transition-colors duration-200 relative" aria-label={UI_TEXT.WISHLIST}>
             <Heart className="w-5 h-5" />
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               0
             </span>
           </button>
-          
           <button
             onClick={() => setIsCartOpen(true)}
             className="text-white/90 hover:text-white transition-colors duration-200 relative"
@@ -165,7 +165,6 @@ const Navbar: FC = () => {
               </span>
             )}
           </button>
-          
           <button
             className="md:hidden text-white/90 hover:text-white ml-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -180,8 +179,6 @@ const Navbar: FC = () => {
           </button>
         </div>
       </div>
-
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-md">
           <div className="px-6 py-4 space-y-4" role="menu">
@@ -197,7 +194,6 @@ const Navbar: FC = () => {
                     openMobileItem === index ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />
                   )}
                 </button>
-                
                 {item.hasDropdown && item.dropdownContent && openMobileItem === index && (
                   <div className="pl-4 space-y-2">
                     {item.dropdownContent.map((section, sectionIndex) => (
@@ -206,7 +202,7 @@ const Navbar: FC = () => {
                         {section.links.map((link, linkIndex) => (
                           <button
                             key={linkIndex}
-                            onClick={() => handleNavClick(link, section.title)}
+                            onClick={() => handleNavClick(link, section.title, item.label)}
                             className="block text-white/80 hover:text-white transition-colors duration-200 py-1 text-sm w-full text-left"
                             role="menuitem"
                           >

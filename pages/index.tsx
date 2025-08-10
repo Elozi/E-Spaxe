@@ -2,7 +2,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
-import { fetchProducts, ProductState } from '../redux/slices/productSlice';
+import { fetchProducts, ProductState,} from '../redux/slices/productSlice';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import Card from '../components/common/Card';
@@ -22,7 +22,7 @@ const Home: FC = () => {
 
 useEffect(() => {
   const fetchData = async () => {
-    await dispatch(fetchProducts());
+    await dispatch(fetchProducts({}));
   };
 
   fetchData();

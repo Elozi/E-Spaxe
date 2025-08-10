@@ -1,20 +1,25 @@
-// components/common/Catalog.tsx
 import { FC, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search, Filter, Grid, List } from 'lucide-react';
 import { RootState } from '../../redux/store';
-import { setFilters, setSort, fetchProducts, fetchCategories } from '../../redux/slices/productSlice';
+import { setFilters, setSort, fetchProducts, fetchCategories, toggleWishlist } from '../../redux/slices/productSlice';
 import ProductCard from './ProductCard';
 import FilterSidebar from './FilterSidebar';
 import LoadingSpinner from './LoadingSpinner';
-import { UI_TEXT, MOCK_PRODUCTS, CATEGORIES } from '../../constants';
+import { UI_TEXT, CATEGORIES } from '../../constants';
 import { CatalogProps, Filters } from '../../interfaces';
 import type { AppDispatch } from '../../redux/store';
 
-const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: initialSearchQuery }) => {
+const Catalog: FC<CatalogProps> = ({
+  category: initialCategory,
+  subCategory: initialSubCategory,
+  product: initialProduct,
+  collections: initialCollections,
+  searchQuery: initialSearchQuery,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
-   const router = useRouter();
+  const router = useRouter();
   const { filteredProducts, categories, loading, error } = useSelector((state: RootState) => state.products);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
@@ -22,17 +27,25 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setLocalFilters] = useState<Filters>({
     categories: initialCategory ? [initialCategory] : [],
+    subCategories: initialSubCategory ? [initialSubCategory] : [],
+    products: initialProduct ? [initialProduct] : [],
+    collections: initialCollections ? [initialCollections] : [],
     materials: [],
     priceRange: null,
   });
 
-  // Fetch categories and products on mount or category change
   useEffect(() => {
     dispatch(fetchCategories());
-    dispatch(fetchProducts(initialCategory));
-  }, [dispatch, initialCategory]);
+    dispatch(
+      fetchProducts({
+        category: initialCategory,
+        subCategory: initialSubCategory,
+        product: initialProduct,
+        collections: initialCollections,
+      })
+    );
+  }, [dispatch, initialCategory, initialSubCategory, initialProduct, initialCollections]);
 
-  // Update filters and search when they change
   useEffect(() => {
     dispatch(setFilters({ filters, searchQuery, category: initialCategory }));
   }, [dispatch, filters, searchQuery, initialCategory]);
@@ -42,6 +55,77 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
     dispatch(setSort(value));
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    const newFilters = {
+      ...filters,
+      categories: value ? [value] : [],
+      subCategories: [],
+      products: [],
+      collections: [],
+    };
+    setLocalFilters(newFilters);
+    router.push(
+      `/catalog${value ? `?category=${encodeURIComponent(value)}` : ''}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleSubCategoryChange = (value: string) => {
+    const newFilters = {
+      ...filters,
+      subCategories: value ? [value] : [],
+      products: [],
+      collections: [],
+    };
+    setLocalFilters(newFilters);
+    router.push(
+      `/catalog?category=${encodeURIComponent(
+        filters.categories[0] || ''
+      )}&subCategory=${encodeURIComponent(value)}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleProductChange = (value: string) => {
+    const newFilters = {
+      ...filters,
+      products: value ? [value] : [],
+      collections: [],
+    };
+    setLocalFilters(newFilters);
+    router.push(
+      `/catalog?category=${encodeURIComponent(
+        filters.categories[0] || ''
+      )}&subCategory=${encodeURIComponent(
+        (filters.subCategories?.[0] || '')
+      )}&product=${encodeURIComponent(value)}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleCollectionChange = (value: string) => {
+    const newFilters = {
+      ...filters,
+      categories: [],
+      subCategories: [],
+      products: [],
+      collections: value ? [value] : [],
+    };
+    setLocalFilters(newFilters);
+    router.push(
+      `/catalog?collections=${encodeURIComponent(value)}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b">
@@ -49,7 +133,8 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-bold text-gray-900">
-                {CATEGORIES.find(cat => cat.slug === initialCategory)?.name || 'Shop'}
+                {categories.find((cat) => cat.slug === initialCategory)?.name ||
+                  'Shop'}
               </h1>
               <span className="text-sm text-gray-500">
                 ({filteredProducts.length} {UI_TEXT.ITEMS})
@@ -63,7 +148,7 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
                   placeholder="Search products..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={handleSearchChange}
                   aria-label="Search products"
                 />
               </div>
@@ -103,25 +188,16 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
               </button>
             </div>
           </div>
-          {/* Category Filter Dropdown */}
           <div className="mt-4">
             <select
               value={filters.categories[0] || ''}
-              onChange={(e) => {
-                const value = e.target.value;
-                setLocalFilters({
-                  ...filters,
-                  categories: value ? [value] : [],
-                });
-                // Update URL to reflect category change
-                router.push(`/catalog?category=${encodeURIComponent(value)}`);
-              }}
+              onChange={(e) => handleCategoryChange(e.target.value)}
               className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Select category"
             >
               <option value="">{UI_TEXT.ALL_CATEGORIES}</option>
               {categories.map((cat) => (
-                <option key={cat.slug} value={cat.slug}>
+                <option key={cat.id} value={cat.slug}>
                   {cat.name}
                 </option>
               ))}
@@ -159,10 +235,14 @@ const Catalog: FC<CatalogProps> = ({ category: initialCategory, searchQuery: ini
                 <LoadingSpinner size="lg" />
               </div>
             ) : error ? (
-              <p className="text-red-500 text-center py-8">{UI_TEXT.ERROR}</p>
+              <div className="text-center py-12">
+                <p className="text-red-500">{error}</p>
+                <p className="text-gray-500 mt-2">Please try again or check your connection.</p>
+              </div>
             ) : filteredProducts.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500">{UI_TEXT.NO_PRODUCTS}</p>
+                <p className="text-gray-500 mt-2">Try adjusting your search or filters.</p>
               </div>
             ) : (
               <div

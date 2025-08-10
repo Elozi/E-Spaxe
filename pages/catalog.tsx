@@ -9,13 +9,19 @@ import Catalog from '../components/common/Catalog';
 const CatalogPage: FC = () => {
 const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { category, search } = router.query;
+const { category, subCategory, product, collections, search } = router.query;
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts({}));
   }, [dispatch]);
 
-  return <Catalog category={category as string} searchQuery={search as string} />;
+  return <Catalog
+  category={category as string}
+  subCategory={subCategory as string}
+  product={product as string}
+  collections={collections as string}
+  searchQuery={search as string}
+/>;
 };
 
 export default CatalogPage;

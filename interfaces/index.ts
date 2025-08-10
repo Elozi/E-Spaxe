@@ -10,6 +10,9 @@ export interface Product {
   reviews?: number; 
   isWishlisted?: boolean;
   category: string;
+  subCategory?: string;
+  product?: string; 
+  collections?: string;
   material: string;
   description?: string;
   inStock?: boolean;
@@ -100,6 +103,9 @@ export interface Filters {
 
 export interface CatalogProps {
   category?: string;
+  subCategory?: string;
+  product?: string;
+  collections?: string;
   searchQuery?: string;
 }
 export interface Category {
@@ -129,6 +135,11 @@ export interface Filters {
   categories: string[];
   materials: string[];
   subcategories?: string[];
+  subCategory?: string;
+  collections?: string[];
+  subCategories?: string[];
+  products?: string[];
+  
   // priceRange?: PriceRange | null;
 }
 
@@ -143,5 +154,14 @@ export interface FilterBarProps {
   categories: string[];
   onFilterChange: (categories: string[]) => void;
 }
-export type CategoryKey = 'Jewelry' | 'womens-dresses' | 'womens-tops' | 'mens-shirts' | 'mens-t-shirts' | 'bags' | 'shoes' | 'Girls Clothing' |'Boys Clothing' ;
-// export type CategoryKey = 'Jewelry' | 'womens-dresses' | 'Women\'s Tops' | 'mens-shirts' | 'mens-t-shirts' | 'Girls Clothing' | 'Boys Clothing' | 'bags' | 'shoes';
+
+export type CategoryKey =
+ 'Jewelry' | 
+ 'womens-dresses' |
+  'womens-tops' |
+   'mens-shirts' |
+    'mens-t-shirts' |
+    'bags' | 
+    'shoes' |
+     'Girls Clothing' |
+     'Boys Clothing' ;
