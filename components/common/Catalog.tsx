@@ -183,17 +183,19 @@ const handleSidebarChange = (newFilters: Filters) => {
                   aria-label="Search products"
                 />
               </div>
-              <select
-                value={sortBy}
-                onChange={(e) => handleSortChange(e.target.value as any)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
-                aria-label="Sort products"
-              >
-                <option value="featured">Featured</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Highest Rated</option>
-              </select>
+             <select
+  value={sortBy}
+  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+    handleSortChange(e.target.value as 'featured' | 'price-low' | 'price-high' | 'rating')
+  }
+  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+  aria-label="Sort products"
+>
+  <option value="featured">Featured</option>
+  <option value="price-low">Price: Low to High</option>
+  <option value="price-high">Price: High to Low</option>
+  <option value="rating">Highest Rated</option>
+</select>
               <div className="flex border border-gray-300 rounded-lg">
                 <button
                   onClick={() => setViewMode('grid')}

@@ -11,13 +11,13 @@ const Footer: FC = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.newsletter);
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      dispatch(subscribeNewsletter(email) as any);
-      setEmail('');
-    }
-  };
+ const handleSubscribe = (e: React.FormEvent) => {
+  e.preventDefault();
+  if (email.trim()) {
+    dispatch(subscribeNewsletter(email) as unknown as ReturnType<typeof dispatch>);
+    setEmail('');
+  }
+};
 
   return (
     <footer className="bg-gray-50 pt-16 pb-8 bg-gray-900" role="contentinfo">
